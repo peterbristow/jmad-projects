@@ -74,9 +74,10 @@ class StudentTestCase(LiveServerTestCase):
         second_search_results = self.browser.find_elements_by_css_selector(
             '.jmad-search-result')
         self.assertEqual(len(second_search_results), 2)
-        self.fail('Incomplete Test')
 
         # He clicks on a search result.
+        second_search_results[0].click()
+        self.fail('Incomplete Test')
 
         # The solo page has the title, artist and album for
         # this particular solo.
