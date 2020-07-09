@@ -12,17 +12,22 @@ class StudentTestCase(LiveServerTestCase):
         self.solo1 = Solo.objects.create(
             instrument='saxophone',
             artist='John Coltrane',
-            track='My Favorite Things'
+            track='My Favorite Things',
+            album='My Favorite Things'
         )
         self.solo2 = Solo.objects.create(
             instrument='saxophone',
             artist='Cannonball Adderley',
-            track='All Blues'
+            track='All Blues',
+            album='Kind of Blue',
+            start_time='2:06',
+            end_time='4:01'
         )
         self.solo3 = Solo.objects.create(
             instrument='saxophone',
             artist='Cannonball Adderley',
-            track='Waltz for Debby'
+            track='Waltz for Debby',
+            album='Know What I Mean?'
         )
 
     def tearDown(self):
@@ -121,4 +126,4 @@ class StudentTestCase(LiveServerTestCase):
             '4:01'
         )
 
-        self.fail('Incomplete Test')
+        # self.fail('Incomplete Test')
