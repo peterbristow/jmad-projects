@@ -80,8 +80,6 @@ class StudentTestCase(LiveServerTestCase):
 
         # The solo page has the title, artist and album for
         # this particular solo.
-        import pdb
-        pdb.set_trace()
         self.fail('Incomplete Test')
         self.assertEqual(
             self.browser.current_url,

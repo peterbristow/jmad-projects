@@ -5,23 +5,28 @@ from solos.models import Solo
 from solos.views import index, SoloDetailView
 
 
-class IndexViewTestCase(TestCase):
-
+class SolosBaseTestCase(TestCase):
     def setUp(self):
         # RequestFactory is a tool for creating and fine-tuning
         # HTTP requests that we can use to test view functions.
         self.factory = RequestFactory()
 
-        self.drum_solo = Solo.objects.create(
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.drum_solo = Solo.objects.create(
             instrument='drums',
             artist='Rich',
             track='Bugle Call Rag'
         )
-        self.bass_solo = Solo.objects.create(
+        cls.sax_solo = Solo.objects.create(
             instrument='saxophone',
             artist='Coltrane',
             track='Mr. PC'
         )
+
+
+class IndexViewTestCase(SolosBaseTestCase):
 
     def test_index_view_basic(self):
         """
