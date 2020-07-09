@@ -1,6 +1,7 @@
 from django.test import LiveServerTestCase
 from selenium import webdriver
 
+from albums.models import Album, Track
 from solos.models import Solo
 
 
@@ -9,26 +10,47 @@ class StudentTestCase(LiveServerTestCase):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(2)
 
+        self.album1 = Album.objects.create(
+            name='My Favorite Things', slug='my-favorite-things')
+        self.track1 = Track.objects.create(
+            name='My Favorite Things', slug='my-favorite-things',
+            album=self.album1)
         self.solo1 = Solo.objects.create(
-            instrument='saxophone',
-            artist='John Coltrane',
-            track='My Favorite Things',
-            album='My Favorite Things'
-        )
+            instrument='saxophone', artist='John Coltrane',
+            track=self.track1, slug='john-coltrane')
+
+        self.album2 = Album.objects.create(
+            name='Kind of Blue', slug='kind-of-blue')
+        self.track2 = Track.objects.create(
+            name='All Blues', slug='all-blues',
+            album=self.album2, track_number=4)
         self.solo2 = Solo.objects.create(
-            instrument='saxophone',
-            artist='Cannonball Adderley',
-            track='All Blues',
-            album='Kind of Blue',
-            start_time='2:06',
-            end_time='4:01'
-        )
+            instrument='saxophone', artist='Cannonball Adderley',
+            track=self.track2, start_time='4:05', end_time='6:04',
+            slug='cannonball-adderley')
+
+        self.album3 = Album.objects.create(
+            name='Know What I Mean?', slug='know-what-i-mean')
+        self.track3 = Track.objects.create(
+            name='Waltz for Debby', slug='waltz-for-debby',
+            album=self.album3)
         self.solo3 = Solo.objects.create(
-            instrument='saxophone',
-            artist='Cannonball Adderley',
-            track='Waltz for Debby',
-            album='Know What I Mean?'
-        )
+            instrument='saxophone', artist='Cannonball Adderley',
+            track=self.track3, slug='cannonball-adderley')
+
+        self.solo4 = Solo.objects.create(
+            instrument='trumpet',
+            artist='Miles Davis',
+            track=self.track2,
+            slug='miles-davis')
+
+        self.track4 = Track.objects.create(
+            name='Freddie Freeloader',
+            album=self.album2)
+
+        self.track5 = Track.objects.create(
+            name='Blue in Green',
+            album=self.album2)
 
     def tearDown(self):
         self.browser.quit()
@@ -121,4 +143,4 @@ class StudentTestCase(LiveServerTestCase):
             'Kind of Blue [3 tracks]'
         )
 
-        self.fail('Incomplete Test')
+        # self.fail('Incomplete Test')

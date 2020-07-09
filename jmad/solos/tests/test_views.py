@@ -3,7 +3,7 @@ from django.db.models.query import QuerySet
 
 from albums.models import Album, Track
 from solos.models import Solo
-from solos.views import index, SoloDetailView
+from solos.views import index, solo_detail
 
 
 class SolosBaseTestCase(TestCase):
@@ -22,8 +22,8 @@ class SolosBaseTestCase(TestCase):
             name='Bugle Call Rag', slug='bugle-call-rag',
             album=cls.no_funny_hats)
         cls.drum_solo = Solo.objects.create(
-            instrument='drums', artist='Rich',
-            track=cls.bugle_call_rag, slug='rich')
+            instrument='drums', artist='Buddy Rich',
+            track=cls.bugle_call_rag, slug='buddy-rich')
 
         cls.giant_steps = Album.objects.create(
             name='Giant Steps', slug='giant-steps')
@@ -61,7 +61,7 @@ class IndexViewTestCase(SolosBaseTestCase):
 
         self.assertIs(type(solos), QuerySet)
         self.assertEqual(len(solos), 1)
-        self.assertEqual(solos[0].artist, 'Rich')
+        self.assertEqual(solos[0].artist, 'Buddy Rich')
 
 
 class SoloViewTestCase(SolosBaseTestCase):
@@ -71,20 +71,30 @@ class SoloViewTestCase(SolosBaseTestCase):
 
     def test_basic(self):
         """
-        Test that the solo view returns a 200 response, uses
-        the correct template, and has the correct context
+        Test that the solo view returns a 200 response and uses 
+        The correct template
         """
-        request = self.factory.get('/solos/1/')
-
-        response = SoloDetailView.as_view()(
-            request,
-            pk=self.drum_solo.pk
+        request = self.factory.get(
+            '/solos/no-funny-hats/bugle-call-rag/buddy-rich/'
         )
+
+        with self.assertTemplateUsed('solos/solo_detail.html'):
+            response = solo_detail(
+                request,
+                album=self.no_funny_hats.slug,
+                track=self.bugle_call_rag.slug,
+                artist=self.drum_solo.slug
+            )
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.context_data['solo'].artist,
-            'Rich'
+        page = response.content.decode()
+        self.assertInHTML('<p id="jmad-artist">Buddy Rich</p>', page)
+        self.assertInHTML(
+            '<p id="jmad-track">Bugle Call Rag [1 solo]</p>', page)
+
+        response = solo_detail(
+            request,
+            album=self.no_funny_hats.slug,
+            track=self.bugle_call_rag.slug,
+            artist=self.drum_solo.slug
         )
-        with self.assertTemplateUsed('solos/solo_detail.html'):
-            response.render()
