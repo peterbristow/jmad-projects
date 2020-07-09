@@ -9,6 +9,7 @@ class SolosBaseTestCase(TestCase):
     def setUp(self):
         # RequestFactory is a tool for creating and fine-tuning
         # HTTP requests that we can use to test view functions.
+        # Does not go thru Djangio framework (routing middleware etc)
         self.factory = RequestFactory()
 
     @classmethod
