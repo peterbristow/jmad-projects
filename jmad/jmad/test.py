@@ -91,6 +91,9 @@ class StudentTestCase(LiveServerTestCase):
         # He clicks on a search result.
         second_search_results[0].click()
 
+        # import pdb
+        # pdb.set_trace()
+
         # On the solo page...
         self.assertEqual(
             self.browser.current_url,
