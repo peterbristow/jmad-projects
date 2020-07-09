@@ -8,5 +8,6 @@ from solos.views import SoloDetailView
 urlpatterns = [
     url(r'^$', views.index),
     url(r'^admin/', admin.site.urls),
-    url(r'^solos/(?P<pk>\d+)/$', SoloDetailView.as_view()),
+    url(r'^recordings/(?P<album>[\w-]+)/(?P<track>[\w-]+)/(?P<artist>[\w-]+)/$',
+        SoloDetailView.as_view()),
 ]
