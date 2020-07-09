@@ -88,7 +88,6 @@ class StudentTestCase(LiveServerTestCase):
 
         # The solo page has the title, artist and album for
         # this particular solo.
-        self.fail('Incomplete Test')
         self.assertEqual(
             self.browser.current_url,
             '{}/solos/2/'.format(self.live_server_url)
@@ -121,3 +120,5 @@ class StudentTestCase(LiveServerTestCase):
                 '#jmad-end-time').text,
             '4:01'
         )
+
+        self.fail('Incomplete Test')
